@@ -26,6 +26,22 @@ body{
  box-shadow:0 12px 35px rgba(0,0,0,.25);
  animation:fadeUp .7s ease;
 }
+
+/* LOGO STYLING */
+.logo-box{
+ display:flex;
+ flex-direction:column;
+ align-items:center;
+ margin-bottom:10px;
+}
+.logo-box img{
+ width:80px;
+ height:80px;
+ object-fit:contain;
+ border-radius:12px;
+ margin-bottom:6px;
+}
+
 h1{
  margin:0;
  text-align:center;
@@ -38,6 +54,7 @@ h2{
  font-size:15px;
  color:#555;
 }
+
 .top-controls{
  display:flex;
  justify-content:space-between;
@@ -58,6 +75,7 @@ h2{
  background:#1e3c72!important;
  color:#fff;
 }
+
 label{
  display:block;
  margin-top:12px;
@@ -83,6 +101,7 @@ select,input{
  font-size:17px;
  cursor:pointer;
 }
+
 .result{
  margin-top:18px;
  text-align:center;
@@ -97,6 +116,7 @@ select,input{
  opacity:1;
  transform:translateY(0);
 }
+
 @keyframes fadeUp{
  from{opacity:0;transform:translateY(20px)}
  to{opacity:1;transform:translateY(0)}
@@ -107,7 +127,13 @@ select,input{
 <body>
 
 <div class="container">
-<h1 id="title">Tiwari Khad Bhandar</h1>
+
+<!-- LOGO + TITLE -->
+<div class="logo-box">
+  <img src="tiwari enterpriese logo .png" alt="Tiwari Enterprise Logo">
+  <h1 id="title">Tiwari Khad Bhandar</h1>
+</div>
+
 <h2 id="subtitle">Fertilizer Calculator</h2>
 
 <div class="top-controls">
@@ -169,29 +195,25 @@ function calculate(){
    return;
  }
 
- let result,productNameHi,productNameEn;
+ let result,productHi,productEn;
 
  if(product==="uria"){
    result=(x*1000)/45;
-   productNameHi="यूरिया";
-   productNameEn="urea";
+   productHi="यूरिया";
+   productEn="urea";
  }else{
    result=(x*1000)/50;
-   productNameHi=
-     product==="mop"?"एमओपी":
-     product==="dap"?"डीएपी":"एसएसपी";
-   productNameEn=product.toUpperCase();
+   productHi=product==="mop"?"एमओपी":product==="dap"?"डीएपी":"एसएसपी";
+   productEn=product.toUpperCase();
  }
 
  result=result.toFixed(2);
-
- resultBox.innerText=
-  (currentLang==="hi"?"परिणाम: ":"Result: ")+result;
+ resultBox.innerText=(currentLang==="hi"?"परिणाम: ":"Result: ")+result;
  resultBox.classList.add("show");
 
  const voiceText=currentLang==="hi"
- ? `ठीक है। यह आपके स्टॉक में ${productNameHi} की मात्रा है। परिणाम ${result} है`
- : `Okay. This is the amount of ${productNameEn} in your stock. The result is ${result}`;
+ ? `ठीक है। यह आपके स्टॉक में ${productHi} की मात्रा है। परिणाम ${result} है`
+ : `Okay. This is the amount of ${productEn} in your stock. The result is ${result}`;
 
  speak(voiceText);
 }
@@ -219,3 +241,4 @@ function setLang(lang){
 
 </body>
 </html>
+
