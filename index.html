@@ -27,23 +27,31 @@ body{
  animation:fadeUp .7s ease;
 }
 
-/* LOGO STYLING */
+/* 🔵 LOGO AS REAL CIRCULAR LOGO */
 .logo-box{
  display:flex;
  flex-direction:column;
  align-items:center;
- margin-bottom:10px;
+ margin-bottom:12px;
 }
-.logo-box img{
- width:80px;
- height:80px;
- object-fit:contain;
- border-radius:12px;
- margin-bottom:6px;
+.logo-circle{
+ width:96px;
+ height:96px;
+ border-radius:50%;
+ background:linear-gradient(135deg,#1e3c72,#2a5298);
+ padding:4px;              /* border thickness */
+ box-shadow:0 8px 20px rgba(0,0,0,.25);
+}
+.logo-circle img{
+ width:100%;
+ height:100%;
+ border-radius:50%;
+ object-fit:cover;        /* VERY IMPORTANT */
+ background:#fff;
 }
 
 h1{
- margin:0;
+ margin:8px 0 0;
  text-align:center;
  color:#1e3c72;
  font-size:24px;
@@ -128,9 +136,11 @@ select,input{
 
 <div class="container">
 
-<!-- LOGO + TITLE -->
+<!-- ✅ REAL LOGO LOOK -->
 <div class="logo-box">
-  <img src="tiwari enterpriese logo .png" alt="Tiwari Enterprise Logo">
+  <div class="logo-circle">
+    <img src="tiwari enterpriese logo .png" alt="Tiwari Enterprise Logo">
+  </div>
   <h1 id="title">Tiwari Khad Bhandar</h1>
 </div>
 
