@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tiwari Khad Bhandar</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;
+ font-family:system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
+ background:linear-gradient(135deg,#1e3c72,#2a5298);
+ min-height:100vh;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ padding:10px;
+}
+.container{
+ width:100%;
+ max-width:420px;
+ background:#fff;
+ padding:22px;
+ border-radius:18px;
+ box-shadow:0 12px 35px rgba(0,0,0,.25);
+ animation:fadeUp .7s ease;
+}
+h1{
+ margin:0;
+ text-align:center;
+ color:#1e3c72;
+ font-size:24px;
+}
+h2{
+ text-align:center;
+ margin:6px 0 16px;
+ font-size:15px;
+ color:#555;
+}
+.top-controls{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ margin-bottom:10px;
+}
+.lang-switch button,
+.voice-switch button{
+ border:none;
+ padding:6px 12px;
+ border-radius:20px;
+ font-size:13px;
+ cursor:pointer;
+ background:#e6e6e6;
+ margin:2px;
+}
+.active{
+ background:#1e3c72!important;
+ color:#fff;
+}
+label{
+ display:block;
+ margin-top:12px;
+ font-size:14px;
+ color:#444;
+}
+select,input{
+ width:100%;
+ padding:12px;
+ margin-top:6px;
+ border-radius:10px;
+ border:1px solid #ccc;
+ font-size:16px;
+}
+.calculate{
+ width:100%;
+ margin-top:20px;
+ padding:14px;
+ border:none;
+ border-radius:12px;
+ background:#1e3c72;
+ color:#fff;
+ font-size:17px;
+ cursor:pointer;
+}
+.result{
+ margin-top:18px;
+ text-align:center;
+ font-size:18px;
+ font-weight:bold;
+ color:#1e3c72;
+ opacity:0;
+ transform:translateY(10px);
+ transition:.4s ease;
+}
+.result.show{
+ opacity:1;
+ transform:translateY(0);
+}
+@keyframes fadeUp{
+ from{opacity:0;transform:translateY(20px)}
+ to{opacity:1;transform:translateY(0)}
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+<h1 id="title">Tiwari Khad Bhandar</h1>
+<h2 id="subtitle">Fertilizer Calculator</h2>
+
+<div class="top-controls">
+  <div class="lang-switch">
+    <button id="enBtn" class="active" onclick="setLang('en')">EN</button>
+    <button id="hiBtn" onclick="setLang('hi')">हिं</button>
+  </div>
+  <div class="voice-switch">
+    <button id="voiceBtn" class="active" onclick="toggleVoice()">🔊 Voice ON</button>
+  </div>
+</div>
+
+<label id="productLabel">Select Product</label>
+<select id="product">
+  <option value="uria">URIA</option>
+  <option value="mop">MOP</option>
+  <option value="dap">DAP</option>
+  <option value="ssp">SSP</option>
+</select>
+
+<label id="amountLabel">Enter Amount</label>
+<input type="number" id="amount" placeholder="e.g. 4">
+
+<button class="calculate" onclick="calculate()" id="calcBtn">Calculate</button>
+
+<div class="result" id="result"></div>
+</div>
+
+<script>
+let currentLang="en";
+let voiceOn=true;
+
+function toggleVoice(){
+ voiceOn=!voiceOn;
+ voiceBtn.innerText=voiceOn?"🔊 Voice ON":"🔇 Voice OFF";
+ voiceBtn.classList.toggle("active",voiceOn);
+}
+
+function speak(text){
+ if(!voiceOn) return;
+ speechSynthesis.cancel();
+ const msg=new SpeechSynthesisUtterance(text);
+ msg.lang=currentLang==="hi"?"hi-IN":"en-IN";
+ msg.rate=0.95;
+ msg.volume=1;
+ speechSynthesis.speak(msg);
+}
+
+function calculate(){
+ const x=document.getElementById("amount").value;
+ const product=document.getElementById("product").value;
+ const resultBox=document.getElementById("result");
+
+ if(x===""){
+   const warn=currentLang==="hi"?"कृपया मात्रा दर्ज करें":"Please enter amount";
+   resultBox.innerText=warn;
+   resultBox.classList.add("show");
+   speak(warn);
+   return;
+ }
+
+ let result,productNameHi,productNameEn;
+
+ if(product==="uria"){
+   result=(x*1000)/45;
+   productNameHi="यूरिया";
+   productNameEn="urea";
+ }else{
+   result=(x*1000)/50;
+   productNameHi=
+     product==="mop"?"एमओपी":
+     product==="dap"?"डीएपी":"एसएसपी";
+   productNameEn=product.toUpperCase();
+ }
+
+ result=result.toFixed(2);
+
+ resultBox.innerText=
+  (currentLang==="hi"?"परिणाम: ":"Result: ")+result;
+ resultBox.classList.add("show");
+
+ const voiceText=currentLang==="hi"
+ ? `ठीक है। यह आपके स्टॉक में ${productNameHi} की मात्रा है। परिणाम ${result} है`
+ : `Okay. This is the amount of ${productNameEn} in your stock. The result is ${result}`;
+
+ speak(voiceText);
+}
+
+function setLang(lang){
+ currentLang=lang;
+ enBtn.classList.toggle("active",lang==="en");
+ hiBtn.classList.toggle("active",lang==="hi");
+
+ if(lang==="hi"){
+   title.innerText="तिवारी खाद भंडार";
+   subtitle.innerText="खाद कैलकुलेटर";
+   productLabel.innerText="खाद चुनें";
+   amountLabel.innerText="मात्रा दर्ज करें";
+   calcBtn.innerText="गणना करें";
+ }else{
+   title.innerText="Tiwari Khad Bhandar";
+   subtitle.innerText="Fertilizer Calculator";
+   productLabel.innerText="Select Product";
+   amountLabel.innerText="Enter Amount";
+   calcBtn.innerText="Calculate";
+ }
+}
+</script>
+
+</body>
+</html>
